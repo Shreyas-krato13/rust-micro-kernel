@@ -42,7 +42,7 @@ kdebug!("Debug message");
 
 kprintln!("");
  
-kprintln!("Layer 3: Keyboard Driver ACTIVE");
+kprintln!("Layer 4: Micro-OS CLI ACTIVE");
 shell::start();
 
      loop {
