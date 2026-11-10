@@ -4,6 +4,7 @@
 pub mod vga_buffer;
 pub mod logger;
 pub mod keyboard;
+pub mod shell;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
@@ -42,7 +43,7 @@ kdebug!("Debug message");
 kprintln!("");
  
 kprintln!("Layer 3: Keyboard Driver ACTIVE");
-kprintln!("Type something below:");
+shell::start();
 
      loop {
         keyboard::poll();

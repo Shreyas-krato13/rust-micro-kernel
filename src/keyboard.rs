@@ -85,20 +85,20 @@ pub fn poll() {
         }
 
         // ENTER KEY
-        if code == 0x1C {
-            crate::kprintln!("");
-            return;
-        }
+if code == 0x1C {
+    crate::shell::handle_enter();
+    return;
+}
 
-        // BACKSPACE KEY
+// BACKSPACE KEY
 if code == 0x0E {
-    crate::vga_buffer::WRITER.lock().delete_char();
+    crate::shell::handle_backspace();
     return;
 }
         let shift = SHIFT.load(Ordering::Relaxed);
 
         if let Some(character) = scancode_to_ascii(code, shift) {
-            crate::kprint!("{}", character as char);
-        }
+    crate::shell::handle_character(character);
+}
     }
 }
