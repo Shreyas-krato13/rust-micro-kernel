@@ -5,6 +5,8 @@ pub mod vga_buffer;
 pub mod logger;
 pub mod keyboard;
 pub mod shell;
+pub mod memory;
+pub mod scheduler;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;

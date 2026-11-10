@@ -97,6 +97,8 @@ fn execute_command(command: &str) {
             crate::kprintln!("about   - About Micro-OS");
             crate::kprintln!("version - OS version");
             crate::kprintln!("echo    - Display message");
+            crate::kprintln!("mem     - Show memory information");
+            crate::kprintln!("alloc N - Allocate N bytes");
         }
 
         "about" => {
@@ -109,11 +111,56 @@ fn execute_command(command: &str) {
             crate::kprintln!("Micro-OS Version 0.1.0");
         }
 
+        "mem" => {
+            let (used, free) = crate::memory::get_stats();
+
+            crate::kprintln!("========== MEMORY MANAGER ==========");
+            crate::kprintln!("Total Memory Pool : {} KB",
+                crate::memory::POOL_SIZE / 1024);
+            crate::kprintln!("Used Memory       : {} bytes", used);
+            crate::kprintln!("Free Memory       : {} bytes", free);
+            crate::kprintln!("====================================");
+        }
+        
+        "tasks" => {
+    crate::scheduler::run_demo();
+}
+
         _ => {
+
             if let Some(message) = command.strip_prefix("echo ") {
+
                 crate::kprintln!("{}", message);
+
+            } else if let Some(size_text) = command.strip_prefix("alloc ") {
+
+                match size_text.parse::<usize>() {
+
+                    Ok(size) => {
+                        match crate::memory::allocate(size) {
+
+                            Some(offset) => {
+                                crate::kprintln!(
+                                    "Allocated {} bytes at offset {}",
+                                    size, offset
+                                );
+                            }
+
+                            None => {
+                                crate::kprintln!("Memory allocation failed!");
+                            }
+                        }
+                    }
+
+                    Err(_) => {
+                        crate::kprintln!("Invalid memory size!");
+                    }
+                }
+
             } else if !command.is_empty() {
+
                 crate::kprintln!("Unknown command: {}", command);
+
             }
         }
     }
