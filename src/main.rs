@@ -3,6 +3,7 @@
 
 pub mod vga_buffer;
 pub mod logger;
+pub mod keyboard;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
@@ -40,11 +41,16 @@ kdebug!("Debug message");
 
 kprintln!("");
  
+kprintln!("Layer 3: Keyboard Driver ACTIVE");
+kprintln!("Type something below:");
 
-   loop {
+     loop {
+        keyboard::poll();
         core::hint::spin_loop();
     }
 }
+
+// PANIC HANDLER
 
 // PANIC HANDLER
 
@@ -55,3 +61,4 @@ fn panic(_info: &PanicInfo) -> ! {
         core::hint::spin_loop();
     }
 }
+

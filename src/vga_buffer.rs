@@ -141,6 +141,24 @@ impl Writer {
     pub fn set_color(&mut self, foreground: Color, background: Color) {
         self.color_code = ColorCode::new(foreground, background);
     }
+// BACKSPACE SUPPORT
+
+pub fn delete_char(&mut self) {
+    if self.column_position > 0 {
+        self.column_position -= 1;
+
+        let row = BUFFER_HEIGHT - 1;
+        let col = self.column_position;
+
+        self.buffer.chars[row][col].write(
+            ScreenChar {
+                ascii_character: b' ',
+                color_code: self.color_code,
+            }
+        );
+    }
+}
+
 }
 
 // IMPLEMENT WRITE TRAIT
